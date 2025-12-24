@@ -48,11 +48,11 @@ kind: Service
 metadata:
   name: mongodb
   namespace: roboshop
+spec:
   selector:
     project: roboshop
     environment: dev
     component: mongodb
-spec:
   ports:
     - protocol: TCP
       port: 27017    # port on which service is exposed
