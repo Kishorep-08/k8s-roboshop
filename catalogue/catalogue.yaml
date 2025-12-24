@@ -1,4 +1,14 @@
-apiversion: apps/v1
+apiVersiion: v1
+kind: ConfigMap
+metadata:
+  name: catalogue
+  namespace: roboshop
+data:
+  MONGO: "true"
+  MONGO_URL: "mongodb://mongodb>:27017/catalogue"
+
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalogue
@@ -7,7 +17,7 @@ metadata:
     project: roboshop
     environment: dev
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       project: roboshop
@@ -24,6 +34,9 @@ spec:
         - name: catalogue
           image: kishore8856/catalogue:v2
           imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+              name: catalogue
           readinessProbe:
             httpGet:
               path: /health
@@ -43,7 +56,12 @@ kind: Service
 metadata:
   name: catalogue
   namespace: roboshop
-  labels:
+spec:
+  selector:
     project: roboshop
     environment: dev
     component: catalogue
+  ports:
+    - protocol: TCP
+      port: 8080    # port on which service is exposed
+      targetPort: 8080   # port on which catalogue container is listening
