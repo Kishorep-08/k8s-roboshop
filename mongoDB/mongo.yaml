@@ -32,13 +32,13 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 27017
-            initialDelaySeconds: 10   # Pod created, waits for 10 secs, send TCP connection to port 27017
+            initialDelaySeconds: 20   # Pod created, waits for 10 secs, send TCP connection to port 27017
             periodSeconds: 5          # checks readiness every 5 seconds
           # Liveness probe is to check if pod is alive. If this fails, pod is restarted
           livenessProbe:
             tcpSocket:    # check via TCP socket. Just checks if container is listening on specified port
               port: 27017
-            initialDelaySeconds: 20   # time to wait before performing first health check
+            initialDelaySeconds: 40   # time to wait before performing first health check
             periodSeconds: 5         # frequency of health checks. Here every 5 seconds
       
 ---
