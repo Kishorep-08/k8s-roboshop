@@ -1,0 +1,38 @@
+apiversion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    project: roboshop
+    environment: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      project: roboshop
+      environment: dev
+      component: catalogue
+  template:
+    metadata:
+      labels:
+        project: roboshop
+        environment: dev
+        component: catalogue
+    spec:
+      containers:
+        - name: catalogue
+          image: kishore8856/catalogue:v2
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              initialDelaySeconds: 5
+              periodSeconds: 5                
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              initialDelaySeconds: 10
+              periodSeconds: 5
