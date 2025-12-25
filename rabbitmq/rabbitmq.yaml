@@ -27,11 +27,9 @@ spec:
       containers:
         - name: rabbitmq
           image: rabbitmq:3
-          env:
-          - name: RABBITMQ_DEFAULT_USER
-            value: "roboshop"
-          - name: RABBITMQ_DEFAULT_PASS
-            value: "roboshop123"
+          envFrom:
+            - secretRef:
+              name: rabbitmq-creds 
           imagePullPolicy: Always  # always pulls image from repo. This ensures latest image is used
           # Readiness probe is to check if container is ready to serve traffic. If this fails, pod is removed from service endpoints
           readinessProbe:

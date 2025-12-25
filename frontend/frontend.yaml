@@ -27,16 +27,27 @@ spec:
         readinessProbe:
           httpGet:
             path: /
-            port: 80
+            port: 8080
           initialDelaySeconds: 15
           periodSeconds: 5                
         livenessProbe:
           httpGet:
             path: /
-            port: 80
+            port: 8080
           initialDelaySeconds: 25
           periodSeconds: 5
+        volumeMounts:    # Mount the config map as a volume inside container
+          - name: frontend-config
+            mountPath: /etc/nginx/nginx.conf         # path inside container where config map file is to be mounted
+            subPath: nginx.conf    # subpath tell k8s that nginx.conf alone should be mounted as file. Without this entire config map will be mounted as directory
+      volumes:            # At this stage config map is mounted as volume inside pod
+        - name: frontend-config
+          configMap:
+            name: frontend-cm
 
+############
+#NOTE: Always give subPath while mounting single file from config map. Otherwise entire config map will be mounted as directory. Especially for nginx it should be /etc/nginx/nginx.conf.
+############
 ---
 
 apiVersion: v1
@@ -53,4 +64,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80    # port on which service is exposed
-      targetPort: 80   # port on which frontend container is listening
+      targetPort: 8080   # port on which frontend container is listening
