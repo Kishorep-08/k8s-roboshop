@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rabbbitmq
+  name: rabbitmq
   namespace: roboshop
   # labels for deployment. These can be different from pod labels and selector. These are just for deployment identification
   labels:
