@@ -29,7 +29,7 @@ spec:
           image: rabbitmq:3
           envFrom:
             - secretRef:
-              name: "rabbitmq-creds" 
+                name: "rabbitmq-creds" 
           imagePullPolicy: Always  # always pulls image from repo. This ensures latest image is used
           # Readiness probe is to check if container is ready to serve traffic. If this fails, pod is removed from service endpoints
           readinessProbe:
